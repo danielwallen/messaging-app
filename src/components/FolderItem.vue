@@ -1,5 +1,5 @@
 <template>
-  <li>
+  <li v-if="folder">
     <div
       :style="{ paddingLeft: (level * 16) + 'px' }"
       @click="$emit('select', folder.id)"
@@ -30,8 +30,6 @@ export default {
     level: { type: Number, required: true }
   },
   emits: ['select'],
-  components: {
-    FolderItem: () => import('./FolderItem.vue')
-  }
+ 
 }
 </script>
