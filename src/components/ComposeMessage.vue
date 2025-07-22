@@ -58,3 +58,8 @@ export default {
         this.error = err.message
       } finally {
         this.loading = false
+      }
+    }
+  }
+}
+</script>
