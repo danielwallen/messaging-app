@@ -1,19 +1,37 @@
 <template>
-  <div class="h-full flex flex-col">
+  <div class="h-screen flex flex-col">
     <header class="bg-blue-600 text-white p-4 flex justify-between">
       <h1 class="text-2xl font-semibold">📬 Messaging</h1>
       <EnvSwitcher />
     </header>
+
     <div class="flex flex-1 overflow-hidden">
+      <!-- Sidebar -->
       <FolderList @select-folder="folderId = $event" />
-      <div class="flex-1 flex flex-col p-4">
-        <ComposeMessage />
-        <MessageList :folderId="folderId" @select-message="message = $event" />
-        <MessagePane v-if="message" :message="message" />
+
+      <!-- Main -->
+      <div class="flex-1 flex flex-col">
+        <div class="p-4 border-b bg-white dark:border-gray-700 dark:bg-gray-800 dark:text-white">
+          <ComposeMessage />
+        </div>
+
+        <div class="flex-1 flex">
+          <MessageList
+            class="flex-1 overflow-auto p-4"
+            :folderId="folderId"
+            @select-message="message = $event"
+          />
+          <MessagePane
+            class="w-1/2 border-l dark:border-gray-700"
+            v-if="message"
+            :message="message"
+          />
+        </div>
       </div>
     </div>
   </div>
 </template>
+
 
 <script>
 import FolderList from './components/FolderList.vue'

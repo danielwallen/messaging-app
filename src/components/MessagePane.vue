@@ -1,5 +1,6 @@
 <template>
-  <div class="bg-gray-50 border-t p-4 h-64 overflow-auto">
+  <div class="p-4 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 border-l border-gray-200 dark:border-gray-700">
+ 
     <div v-if="loading" class="text-blue-600">Loading message...</div>
     <div v-else-if="error" class="text-red-600">{{error}}</div>
     <div v-else>
@@ -19,7 +20,9 @@ export default {
     async load(){
       this.loading=true; this.error=null
       try{
-        const res=await fetch(`${BASE_URL}/messages/${this.message.id}`,{headers:getAuthHeaders()})
+        const url = `${BASE_URL}/messages/${this.message.id}`;
+        const res=await fetch(url,{headers:getAuthHeaders()})
+        console.log('Fetching messages from:', url);
         if(!res.ok) throw new Error(res.status)
         this.content=await res.json()
       }catch(e){this.error=e.message}finally{this.loading=false}

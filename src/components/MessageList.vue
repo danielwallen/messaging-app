@@ -1,12 +1,12 @@
 <template>
-  <div class="flex-1 p-4 overflow-auto">
-    <div v-if="loading" class="text-blue-600">Loading messages...</div>
-    <div v-else-if="error" class="text-red-600">{{error}}</div>
+  <div class="flex-1 p-4 overflow-auto bg-white text-black dark:bg-gray-800 dark:text-white">
+    <div v-if="loading" class="text-blue-600 dark:text-blue-400">Loading messages...</div>
+    <div v-else-if="error" class="text-red-600 dark:text-red-400">{{ error }}</div>
     <div v-for="m in messages" :key="m.id"
          @click="$emit('select-message', m)"
-         class="bg-white p-4 shadow rounded mb-2 cursor-pointer hover:bg-gray-50">
-      <h3 class="font-bold">{{m.subject}}</h3>
-      <p class="text-sm text-gray-500">{{m.preview}}</p>
+         class="bg-white dark:bg-gray-700 p-4 shadow rounded mb-2 cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-600 transition">
+      <h3 class="font-bold">{{ m.subject }}</h3>
+      <p class="text-sm text-gray-500 dark:text-gray-300">{{ m.preview }}</p>
     </div>
   </div>
 </template>
