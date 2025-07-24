@@ -1,9 +1,6 @@
 <template>
   <div class="h-screen flex flex-col">
-    <header class="bg-blue-600 text-white p-4 flex justify-between">
-      <h1 class="text-2xl font-semibold">📬 Messaging</h1>
-      <EnvSwitcher />
-    </header>
+
 
     <div class="flex flex-1 overflow-hidden">
       <!-- Sidebar -->

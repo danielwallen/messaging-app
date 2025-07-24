@@ -9,8 +9,8 @@
 
     <div
       v-if="show"
-      class="p-4 rounded shadow border border-gray-300 dark:border-gray-600"
-      :class="['bg-white text-black', 'dark:bg-gray-800 dark:text-white']"
+      class="p-6 rounded-lg shadow border border-gray-300 dark:border-gray-600"
+      :class="['bg-white text-black', 'dark:bg-gray-800 dark:text-gray-100']"
     >
       <h2 class="text-lg font-bold mb-2">Compose New Message</h2>
       <form @submit.prevent="send">
@@ -29,46 +29,41 @@
         <textarea
           v-model="body"
           placeholder="Message..."
-          class="w-full mb-2 px-3 py-2 rounded border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white"
-        ></textarea>
-        <button
-          type="submit"
-          class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded"
-        >
-          Send
-        </button>
+          class="w-full mb-2 px-3 py-2 rounded border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-100"
+        />
+        <div class="flex justify-end">
+          <button type="submit" class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded">
+            Send
+          </button>
+        </div>
       </form>
     </div>
   </div>
 </template>
 
-
 <script setup>
-import { ref } from 'vue';
-import { BASE_URL, getAuthHeaders } from '../config';
+import { ref } from 'vue'
+import { BASE_URL, getAuthHeaders } from '../config'
 
-const to = ref('');
-const subject = ref('');
-const body = ref('');
-const show = ref(false);
+const to = ref('')
+const subject = ref('')
+const body = ref('')
+const show = ref(false)
 
 async function send() {
-  const payload = { to: to.value, subject: subject.value, body: body.value };
+  const payload = { to: to.value, subject: subject.value, body: body.value }
   try {
     const res = await fetch(`${BASE_URL}/messages`, {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        ...getAuthHeaders()
-      },
+      headers: { 'Content-Type': 'application/json', ...getAuthHeaders() },
       body: JSON.stringify(payload)
-    });
-    if (!res.ok) throw new Error(`HTTP ${res.status}`);
-    to.value = subject.value = body.value = '';
-    show.value = false;
-    alert('Message sent!');
+    })
+    if (!res.ok) throw new Error(`HTTP ${res.status}`)
+    to.value = subject.value = body.value = ''
+    show.value = false
+    alert('Message sent!')
   } catch (err) {
-    alert(`Failed to send: ${err.message}`);
+    alert(`Failed to send: ${err.message}`)
   }
 }
 </script>
