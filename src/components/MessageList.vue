@@ -32,8 +32,8 @@
           <h3 :class="m.unread ? 'font-bold' : 'font-normal'">{{ m.subject }}</h3>
           <span class="text-sm text-gray-500 dark:text-gray-400">
             {{
-            m.timestamp
-              ? (new Date(m.timestamp).toLocaleString())
+            m.date
+              ? (new Date(m.date).toLocaleString())
               : 'No date'
           }}
           </span>

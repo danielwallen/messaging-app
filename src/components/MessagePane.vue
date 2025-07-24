@@ -6,8 +6,8 @@
         From: <strong>{{ message.sender }}</strong> •
         <span>
           {{
-            message.timestamp
-              ? (new Date(message.timestamp).toLocaleString())
+            message.date
+              ? (new Date(message.date).toLocaleString())
               : 'No date'
           }}
         </span>
