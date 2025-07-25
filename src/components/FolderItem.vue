@@ -7,8 +7,14 @@
         'flex items-center gap-2 py-2 px-3 rounded-lg cursor-pointer transition-colors',
         isSelected
           ? 'bg-blue-100 text-blue-900 dark:bg-blue-800 dark:text-white'
-          : 'hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-800 dark:text-gray-200'
+          : 'hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-800 dark:text-gray-200',
+        isDragOver ? 'ring-2 ring-blue-400 bg-blue-50 dark:bg-blue-900' : ''
       ]"
+      draggable="true"
+      @dragstart="onDragStart"
+      @dragover.prevent="onDragOver"
+      @dragleave="onDragLeave"
+      @drop="onDrop"
     >
       <svg
         xmlns="http://www.w3.org/2000/svg"
@@ -43,13 +49,15 @@
         :level="level + 1"
         :selected-id="selectedId"
         @select="$emit('select', $event)"
+        @move-folder="$emit('move-folder', $event)"
+        @move-message="$emit('move-message', $event)" 
       />
     </ul>
   </li>
 </template>
 
 <script setup>
-import { computed } from 'vue'
+import { computed, ref } from 'vue'
 
 const props = defineProps({
   folder: Object,
@@ -58,5 +66,33 @@ const props = defineProps({
 })
 
 const isSelected = computed(() => props.folder.id === props.selectedId)
-const emit = defineEmits(['select'])
+const emit = defineEmits(['select', 'move-folder', 'move-message'])
+
+const isDragOver = ref(false)
+
+function onDragStart(e) {
+  e.dataTransfer.setData('folderId', props.folder.id)
+  e.dataTransfer.setData('type', 'folder')
+}
+function onDragOver(e) {
+  isDragOver.value = true
+  e.preventDefault()
+}
+function onDragLeave() {
+  isDragOver.value = false
+}
+function onDrop(e) {
+  isDragOver.value = false
+  const type = e.dataTransfer.getData('type')
+  if (type === 'folder') {
+    const draggedId = e.dataTransfer.getData('folderId')
+    if (draggedId && draggedId !== props.folder.id) {
+      emit('move-folder', { draggedId, targetId: props.folder.id })
+    }
+  }
+  if (type === 'message') {
+    const messageIds = JSON.parse(e.dataTransfer.getData('messageIds') || '[]')
+    emit('move-message', { messageIds, targetFolderId: props.folder.id })
+  }
+}
 </script>

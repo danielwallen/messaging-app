@@ -18,6 +18,8 @@
         :level="0"
         :selected-id="selectedFolder"
         @select="selectFolder"
+        @move-folder="moveFolder"
+        @move-message="moveMessage"
       />
     </ul>
   </aside>
@@ -43,6 +45,11 @@ onMounted(async () => {
     const data = await res.json()
     const arr = Object.values(data)
     tree.value = buildTree(arr)
+    // Selecteer automatisch de eerste folder als er nog geen selectie is
+    if (!selectedFolder.value && tree.value.length > 0) {
+      selectedFolder.value = tree.value[0].id
+      emit('select-folder', selectedFolder.value)
+    }
   } catch (err) {
     error.value = err.message
   } finally {
@@ -55,6 +62,18 @@ function selectFolder(id) {
   emit('select-folder', id)
 }
 
+// Voeg deze functie toe:
+async function moveFolder({ draggedId, targetId }) {
+  // Hier kun je een API-call doen om de parent van draggedId te wijzigen naar targetId
+  // Voor nu: alleen een alert
+  alert(`Verplaats folder ${draggedId} naar ${targetId}`)
+  // Na succesvolle API-call: folders opnieuw laden
+  // await reloadFolders()
+}
+async function moveMessage({ messageIds, targetFolderId }) {
+  alert(`Verplaats berichten ${messageIds.join(', ')} naar folder ${targetFolderId}`)
+  // Hier kun je een API-call doen om de berichten te verplaatsen
+}
 function buildTree(folders) {
   const map = {}
   folders.forEach(f => { map[f.id] = { ...f, children: [] } })
